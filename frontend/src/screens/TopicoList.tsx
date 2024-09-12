@@ -6,8 +6,9 @@ import { TopicoItem } from "../components/Topico";
 export default function TopicoList(){
     const [ topico, setTopico ] = useState<TopicoGetDto[]>();
 
+    let page = 0;
     useEffect(() => {
-        getTopico(1, 0, 50).then((value)=> {
+        getTopico(page, 50).then((value)=> {
             setTopico(value);
         });
     }, []);

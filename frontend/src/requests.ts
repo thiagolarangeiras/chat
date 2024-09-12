@@ -121,6 +121,21 @@ export async function getForumDetails(id: number): Promise<ForumGetDto> {
     return await response.json();
 }
 
+export async function getForumFiltered(search: string, page: number, count: number): Promise<ForumGetDto[]> {
+    const token = localStorage.getItem("token");
+    const init: RequestInit = {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        headers: [["Authorization", `Bearer ${token}`]],
+    };
+    const response = await fetch(`${url}/forum?search=${search}&page=${page}&count=${count}`, init);
+    return await response.json();
+}
+
 export async function getForum(page: number, count: number): Promise<ForumGetDto[]> {
     const token = localStorage.getItem("token");
     const init: RequestInit = {
@@ -226,7 +241,7 @@ export async function getTopicoDetails(id: number): Promise<TopicoGetDto> {
     return await response.json();
 }
 
-export async function getTopico(idForum: number, page: number, count: number): Promise<TopicoGetDto[]> {
+export async function getTopicoByForum(idForum: number, page: number, count: number): Promise<TopicoGetDto[]> {
     const token = localStorage.getItem("token");
     const init: RequestInit = {
         method: "GET",
@@ -238,6 +253,21 @@ export async function getTopico(idForum: number, page: number, count: number): P
         headers: [["Authorization", `Bearer ${token}`]],
     };
     const response = await fetch(`${url}/topico?id-forum=${idForum}&page=${page}&count=${count}`, init);
+    return await response.json();
+}
+
+export async function getTopico(page: number, count: number): Promise<TopicoGetDto[]> {
+    const token = localStorage.getItem("token");
+    const init: RequestInit = {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        headers: [["Authorization", `Bearer ${token}`]],
+    };
+    const response = await fetch(`${url}/topico?page=${page}&count=${count}`, init);
     return await response.json();
 }
 
@@ -361,6 +391,21 @@ export async function getComentarioPorComentario(idComentario: number, page: num
         headers: [["Authorization", `Bearer ${token}`]],
     };
     const response = await fetch(`${url}/comentario?id-comentario=${idComentario}&page=${page}&count=${count}`, init);
+    return await response.json();
+}
+
+export async function getComentario(page: number, count: number): Promise<ComentarioGetDto[]> {
+    const token = localStorage.getItem("token");
+    const init: RequestInit = {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        headers: [["Authorization", `Bearer ${token}`]],
+    };
+    const response = await fetch(`${url}/comentario?page=${page}&count=${count}`, init);
     return await response.json();
 }
 

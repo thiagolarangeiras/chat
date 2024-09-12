@@ -24,14 +24,18 @@ public class ForumController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> inserir(@RequestBody ForumPostDto dto) {
+    public ResponseEntity<Object> post(@RequestBody ForumPostDto dto) {
         Forum forum = Forum.dtoToEntity(dto, 1);
         forum = forumRepository.save(forum);
         return ResponseEntity.status(HttpStatus.OK).body(Forum.entityToDto(forum));
     }
 
     @GetMapping
-    public ResponseEntity<Object> pegarTodos(@RequestParam int page, @RequestParam int count, @Nullable @RequestParam String search) {
+    public ResponseEntity<Object> getAll(
+            @Nullable @RequestParam String search,
+            @RequestParam int page,
+            @RequestParam int count
+    ) {
         if(search == null) {
             Pageable pageable = PageRequest.of(page, count);
             List<ForumGetDto> forumDtos = forumRepository.findAll(pageable)
@@ -56,14 +60,14 @@ public class ForumController {
     }
 
     @GetMapping("{id-forum}")
-    public ResponseEntity<Object> pegar(@PathVariable("id-forum") Integer idforum) {
+    public ResponseEntity<Object> get(@PathVariable("id-forum") Integer idforum) {
         Forum forum = forumRepository.findById(idforum).get();
         ForumGetDto dto = Forum.entityToDto(forum);
         return ResponseEntity.ok(dto);
     }
 
     @PutMapping("{id-forum}")
-    public ResponseEntity<Object> modificar(@PathVariable("id-forum") Integer idforum, @RequestBody ForumPostDto dto) {
+    public ResponseEntity<Object> put(@PathVariable("id-forum") Integer idforum, @RequestBody ForumPostDto dto) {
         if (forumRepository.findById(idforum).isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("forum não existe");
         }
@@ -74,7 +78,7 @@ public class ForumController {
     }
 
     @DeleteMapping("{id-forum}")
-    public ResponseEntity<String> excluir(@PathVariable("id-forum") Integer idforum) {
+    public ResponseEntity<String> delete(@PathVariable("id-forum") Integer idforum) {
         if (forumRepository.findById(idforum).isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("forum não existe");
         }

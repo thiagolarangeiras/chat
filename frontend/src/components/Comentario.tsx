@@ -1,26 +1,33 @@
 import { useState } from "react";
 import { ComentarioPostDto, postComentario, convertData } from "../requests";
+import { Link } from "react-router-dom";
 
 type PropsComentarioDetails = {
+    idTopico?: number;
+    idComentario?: number;
     usuario?: string;
     nome?: string;
     texto?: string;
     data?: Date;
+    avatar?: BinaryData
 }
-export function ComentarioDetails({ usuario, nome, texto, data }: PropsComentarioDetails) {
+export function ComentarioDetails({ idTopico, idComentario, usuario, nome, texto, data, avatar }: PropsComentarioDetails) {
+    let voltar;
+    if (idComentario){
+       voltar = `/comentario/${idComentario}`
+    } else {
+       voltar = `/topico/${idTopico}`
+    }
+    
     return (
-        <div className="flex space-x-3 p-4 border-b border-gray-200">
-            {/* <div className="bg-gray-300 h-10 w-10 rounded-full flex-shrink-0"></div> */}
-            <div className="flex-1">
+        <div className="max-w-2xl mx-auto bg-white shadow-md rounded-md p-6">
+            <Link to={voltar}><p className="mt-4 text-gray-600 text-blue-500 hover:underline">Voltar</p></Link>
+            <div className="mt-6 flex-1">
                 <div className="flex items-center justify-between">
                     <span className="font-semibold text-sm">{`${nome} (${usuario})`}</span>
                     <span className="text-xs text-gray-500">{data ? convertData(data) : ""}</span>
                 </div>
-                <p className="text-sm mt-1 whitespace-pre-line">{texto}</p> {/* whitespace-pre-line para respeitar quebras de linha */}
-                <div className="flex items-center space-x-4 text-gray-500 text-sm mt-2">
-                    {/* <button className="hover:text-blue-600">Curtir</button> */}
-                    <button className="hover:text-blue-600">Responder</button>
-                </div>
+                <p className="text-sm mt-1 whitespace-pre-line">{texto}</p>
             </div>
         </div>
     );
@@ -41,11 +48,7 @@ export function ComentarioItem({ usuario, nome, texto, data }: PropsComentarioIt
                     <span className="font-semibold text-sm">{`${nome} (${usuario})`}</span>
                     <span className="text-xs text-gray-500">{data ? convertData(data) : ""}</span>
                 </div>
-                <p className="text-sm mt-1 whitespace-pre-line">{texto}</p> {/* whitespace-pre-line para respeitar quebras de linha */}
-                <div className="flex items-center space-x-4 text-gray-500 text-sm mt-2">
-                    {/* <button className="hover:text-blue-600">Curtir</button> */}
-                    <button className="hover:text-blue-600">Responder</button>
-                </div>
+                <p className="text-sm mt-1 whitespace-pre-line">{texto}</p>
             </div>
         </div>
     );
@@ -58,7 +61,7 @@ type PropsComentarioForm = {
 
 export function ComentarioForm({ idTopico, idComentario }: PropsComentarioForm) {
     const [enviar, setEnviar] = useState("");
-    
+
     function handleTextareaKeyDown(e: any) {
         if (e.key === 'Tab') {
             e.preventDefault();
@@ -82,7 +85,7 @@ export function ComentarioForm({ idTopico, idComentario }: PropsComentarioForm) 
         postComentario(dto);
         setEnviar("");
     };
-    
+
     return (
         <form onSubmit={handleCommentSubmit} className="mb-4">
             <textarea

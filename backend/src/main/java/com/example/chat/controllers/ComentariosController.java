@@ -33,9 +33,15 @@ public class ComentariosController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> inserirComentario(@RequestBody ComentarioPostDto dto) {
-        if (topicRepository.findById(dto.idTopico()).isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Topico não existe");
+    public ResponseEntity<Object> post(@RequestBody ComentarioPostDto dto) {
+        if (dto.idTopico() != null){
+            if (topicRepository.findById(dto.idTopico()).isEmpty()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Topico não existe");
+            }
+        } else if (dto.idComentarioPai() != null) {
+            if (comentarioRepository.findById(dto.idComentarioPai()).isEmpty()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comentario não existe");
+            }
         }
         Comentario com = Comentario.dtoToEntity(dto, 1);
         Comentario comSalvo = comentarioRepository.save(com);

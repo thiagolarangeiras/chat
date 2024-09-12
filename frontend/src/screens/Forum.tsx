@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { TopicoItem } from "../components/Topico";
-import { ForumGetDto, getForumDetails, getTopico, TopicoGetDto } from "../requests";
+import { TopicoFormModal, TopicoItem } from "../components/Topico";
+import { ForumGetDto, getForumDetails, getTopicoByForum, TopicoGetDto } from "../requests";
 import { Link, useParams } from "react-router-dom";
 import { ForumDetails } from "../components/Forum";
 
@@ -11,12 +11,15 @@ export default function Forum(){
 
     const [ forum, setForum ] = useState<ForumGetDto>();
     const [topicos, setTopicos] = useState<TopicoGetDto[]>();
+    const [isOpen, setIsOpen] = useState(false);
+    
+    let page = 0;
 
     useEffect(() => {
         getForumDetails(idForum).then((value)=> {
             setForum(value);
         });
-        getTopico(idForum, 0, 50).then((value) => {
+        getTopicoByForum(idForum, page, 50).then((value) => {
             setTopicos(value);
         });
     }, []);
@@ -24,7 +27,7 @@ export default function Forum(){
     if (forum == undefined) return;
     return(
         <>
-            <ForumDetails forum={forum} />
+            <ForumDetails forum={forum} setIsOpen={setIsOpen} />
             <div className="space-y-4 p-3">
                 {topicos?.map((top, index) => (
                     <Link to={`/topico/${top.id}`}>
@@ -32,6 +35,7 @@ export default function Forum(){
                     </Link>
                 ))}
             </div>
+            {isOpen && <TopicoFormModal setIsOpen={setIsOpen} idForum={idForum}/>}
         </>
     )
 }

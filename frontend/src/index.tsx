@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, Navigate, RouterProvider, useNavigate } from "react-router-dom";
-
 import './index.css'
+
+import { getTeste } from './requests';
 
 import Login from './screens/Login';
 import Signin from './screens/Signin';
@@ -16,8 +17,10 @@ import TopicoList from './screens/TopicoList';
 import Comentario from './screens/Comentario';
 import ComentarioList from './screens/ComentarioList';
 
-import { getTeste } from './requests';
+
+
 import TestScreen from './screens/TestScreen';
+import Modal from './modal';
 
 type PropsAuth = {
     children: React.ReactNode;

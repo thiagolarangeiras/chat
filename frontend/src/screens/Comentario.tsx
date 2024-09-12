@@ -10,24 +10,27 @@ export default function Comentario(){
 
     const [ comentarioPai, setComentarioPai ] = useState<ComentarioGetDto>();
     const [comentarios, setComentarios] = useState<ComentarioGetDto[]>();
-
+    let page = 0;
     useEffect(() => {
         getComentarioDetails(idComentario).then((value)=> {
             setComentarioPai(value);
         });
-        getComentarioPorComentario(idComentario, 0, 20).then((value) => {
+        getComentarioPorComentario(idComentario, page, 50).then((value) => {
             setComentarios(value);
         });
-    }, []);
+    }, [idComentario]);
     
     if (comentarioPai == undefined) return;
     return(
         <>
-            <ComentarioDetails 
+            <ComentarioDetails
+                idTopico={comentarioPai.idTopico || undefined}
+                idComentario={comentarioPai.idComentarioPai || undefined}
                 data={comentarioPai.data} 
                 nome={comentarioPai.usuario?.nome} 
                 usuario={comentarioPai.usuario?.email} 
-                texto={comentarioPai.corpo} 
+                texto={comentarioPai.corpo}
+                avatar={undefined} 
             />
             <div className="max-w-2xl mx-auto my-10 bg-white p-6 rounded-md shadow-lg">
                 <h2 className="text-lg font-semibold mb-4">Comentários</h2>

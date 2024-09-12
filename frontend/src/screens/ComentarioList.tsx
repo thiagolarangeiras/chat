@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { ComentarioGetDto, getComentarioPorComentario } from "../requests";
+import { ComentarioGetDto, getComentario } from "../requests";
 import { Link } from "react-router-dom";
 import { ComentarioItem } from "../components/Comentario";
 
 export default function ComentarioList(){
     const [ comentario, setComentario ] = useState<ComentarioGetDto[]>();
 
+    let page = 0; 
     useEffect(() => {
-        getComentarioPorComentario(52, 0, 50).then((value)=> {
+        getComentario(page, 50).then((value)=> {
             setComentario(value);
         });
     }, []);

@@ -11,7 +11,7 @@ export default function Login() {
     function handleLogin(e: any) {
         e.preventDefault();
         postLogin(usuario).then((value)=> {
-            if (value.token) navigate("/forum/1");
+            if (value.token) navigate("/forum");
         });
     };
 

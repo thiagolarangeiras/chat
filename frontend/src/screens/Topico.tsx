@@ -12,11 +12,12 @@ export default function Topico(){
     const [ topico, setTopico ] = useState<TopicoGetDto>();
     const [comentarios, setComentarios] = useState<ComentarioGetDto[]>();
 
+    let page = 0;
     useEffect(() => {
         getTopicoDetails(idTopico).then((value)=> {
             setTopico(value);
         });
-        getComentarioPorTopico(idTopico, 0, 20).then((value) => {
+        getComentarioPorTopico(idTopico, page, 50).then((value) => {
             setComentarios(value);
         });
     }, []);
